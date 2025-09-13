@@ -1,4 +1,4 @@
-package xyz.malefic.lib.fibonacci
+package xyz.malefic.compose.booster
 
 /**
  * Generates an infinite Fibonacci sequence starting from the `firstElement` and `secondElement`.

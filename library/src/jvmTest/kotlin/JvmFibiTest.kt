@@ -1,4 +1,4 @@
-package xyz.malefic.lib.fibonacci
+package xyz.malefic.compose.booster
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
