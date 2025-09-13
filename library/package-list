@@ -1,0 +1,7 @@
+$dokka.format:html-v1
+$dokka.linkExtension:html
+$dokka.location:xyz.malefic.lib.fibonacci////PointingToDeclaration/library/xyz.malefic.lib.fibonacci/index.html
+$dokka.location:xyz.malefic.lib.fibonacci//firstElement/#/PointingToDeclaration/library/xyz.malefic.lib.fibonacci/first-element.html
+$dokka.location:xyz.malefic.lib.fibonacci//generateFibi/#/PointingToDeclaration/library/xyz.malefic.lib.fibonacci/generate-fibi.html
+$dokka.location:xyz.malefic.lib.fibonacci//secondElement/#/PointingToDeclaration/library/xyz.malefic.lib.fibonacci/second-element.html
+xyz.malefic.lib.fibonacci
