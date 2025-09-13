@@ -1,0 +1,264 @@
+= Kotlin Multiplatform Library Template
+:toc: left
+:toclevels: 3
+:source-highlighter: highlightjs
+:icons: font
+
+A comprehensive template for creating Kotlin Multiplatform libraries with publishing to Maven Central.
+
+== Overview
+
+This template provides everything you need to build and publish a Kotlin Multiplatform library to Maven Central. It includes support for multiple platforms and comes pre-configured with modern development tools.
+
+== Supported Platforms
+
+This template supports the following platforms:
+
+[cols="1,2", options="header"]
+|===
+|Platform |Description
+|JVM |Java Virtual Machine applications, including Compose Desktop
+|Android |Android applications and libraries
+|Native |iOS applications
+|Web |JavaScript & WebAssembly applications
+|===
+
+== Features
+
+=== Kotlin Multiplatform
+Full Kotlin Multiplatform setup with support for a variety of  targets.
+
+=== Publishing to Maven Central
+Pre-configured publishing setup using the vanniktech Maven publish plugin with support for:
+
+* Automatic signing with GPG keys
+* Publishing to Sonatype Central Portal
+* GitHub Actions integration for automated releases
+
+=== Development Tools
+
+[cols="1,1,2", options="header"]
+|===
+|Tool |Version |Purpose
+|Kotlinter |Latest |Kotlin linting and code formatting
+|Dokka |Latest |API documentation generation
+|Kermit |Latest |Multiplatform logging library
+|===
+
+=== Project Configuration
+Centralized configuration using gradle.properties for easy customization:
+
+* Developer information
+* Repository details
+* Publishing coordinates
+* Library metadata
+
+== Getting Started
+
+=== Prerequisites
+
+* JDK 11 or higher
+* Gradle 8.0 or higher
+* Xcode (for iOS development, macOS only)
+
+=== Setup
+
+1. Clone this template repository
+2. Update the `gradle.properties` file with your information:
+   * Change `user`, `dev`, `mail`, `devURL` to your details
+   * Update `repo`, `g`, `artifact`, `desc` for your library
+   * Set the initial version `v`
+
+3. Rename the library module if desired
+4. Start developing your library in the `library/src` directory
+
+=== Building
+
+To build the library for all platforms:
+
+[source,bash]
+----
+./gradlew build
+----
+
+To run tests on all platforms:
+
+[source,bash]
+----
+./gradlew allTests
+----
+
+To generate documentation:
+
+[source,bash]
+----
+./gradlew dokkaGenerate
+----
+
+== Publishing to Maven Central
+
+This template uses a similar packaging secret method as other Malefic projects, making it easy to set up automated publishing.
+
+[IMPORTANT]
+====
+For publishing to work, the following GitHub secrets must be configured in your repository:
+
+* `GPG_KEY_ID`: The ID of your GPG key
+* `GPG_PASSPHRASE`: The passphrase for your GPG key  
+* `GPG_PRIVATE_KEY`: Your GPG private key
+* `SONATYPE_TOKEN_XML`: Your Sonatype Central Portal user token in XML format
+====
+
+=== Setting Up Secrets
+
+==== GPG Key Setup
+1. Generate a GPG key pair:
+[source,bash]
+----
+gpg --full-generate-key
+----
+
+2. Export your private key:
+[source,bash]
+----
+gpg --armor --export-secret-keys YOUR_KEY_ID > private_key.gpg
+----
+
+3. Get your key ID:
+[source,bash]
+----
+gpg --list-secret-keys --keyid-format=long
+----
+
+4. Upload your public key to a keyserver:
+[source,bash]
+----
+gpg --keyserver keyserver.ubuntu.com --send-keys YOUR_KEY_ID
+----
+
+==== Sonatype Setup
+1. Create an account on https://central.sonatype.com/
+2. Register your namespace (e.g., `io.github.yourusername`)
+3. Generate a user token from the Account page
+4. Copy the XML token block for the GitHub secret
+
+=== Publishing Process
+
+The template includes a GitHub Actions workflow that automatically publishes releases:
+
+1. Create a new release on GitHub
+2. The workflow will automatically build and publish to Maven Central
+3. Artifacts will be available after Sonatype review (usually 15-30 minutes)
+
+To publish manually:
+
+[source,bash]
+----
+./gradlew publishToMavenCentral
+----
+
+== Project Structure
+
+[source]
+----
+MultiLibTemplate/
+├── .github/
+│   └── workflows/
+│       ├── gradle.yml         # Testing workflow
+│       ├── deploy-docs.yml    # Dokka workflow
+│       └── publish.yml        # Publishing workflow
+├── library/                   # Main library module
+│   ├── build.gradle.kts      # Library-specific build configuration
+│   └── src/
+│       ├── commonMain/        # Common multiplatform code
+│       ├── commonTest/        # Common tests
+│       ├── jvmMain/          # JVM-specific code
+│       ├── jvmTest/          # JVM-specific tests
+│       ├── androidMain/      # Android-specific code
+│       ├── androidTest/      # Android-specific tests
+│       ├── iosMain/          # iOS-specific code
+│       ├── iosTest/          # iOS-specific tests
+│       ├── macosMain/        # macOS-specific code
+│       ├── macosTest/        # macOS-specific tests
+│       ├── jsMain/           # JavaScript-specific code
+│       ├── jsTest/           # JavaScript-specific tests
+│       ├── wasmMain/         # WebAssembly-specific code
+│       ├── wasmTest/         # WebAssembly-specific tests
+│       ├── linuxMain/        # Linux-specific code
+│       └── linuxTest/        # Linux-specific tests
+├── build.gradle.kts          # Root build configuration
+├── gradle.properties         # Project configuration
+├── settings.gradle.kts       # Gradle settings
+└── README.adoc              # This file
+----
+
+== Configuration
+
+All project configuration is centralized in `gradle.properties`:
+
+[source,properties]
+----
+# Developer Information
+user=YourGitHubUsername
+dev=Your Full Name
+mail=your.email@example.com
+devURL=https://your-website.com
+
+# Project Information  
+repo=YourRepositoryName
+g=your.group.id
+artifact=your-artifact-name
+desc=Your library description
+inception=2025
+
+# Version
+v=1.0.0
+----
+
+== Example Usage
+
+The template includes a simple Fibonacci sequence generator as an example. Replace this with your own library code:
+
+[source,kotlin]
+----
+// Common code
+fun generateFibi() =
+    sequence {
+        var a = firstElement
+        yield(a)
+        var b = secondElement
+        yield(b)
+        while (true) {
+            val c = a + b
+            yield(c)
+            a = b
+            b = c
+        }
+    }
+
+expect val firstElement: Int
+expect val secondElement: Int
+
+// Platform-specific implementations
+actual val firstElement = 3
+actual val secondElement = 4
+----
+
+== License
+
+This template is licensed under the MIT License. Update the LICENSE file with your chosen license.
+
+== Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Add tests for new functionality
+5. Submit a pull request
+
+== Resources
+
+* https://kotlinlang.org/docs/multiplatform.html[Kotlin Multiplatform Documentation]
+* https://central.sonatype.org/[Maven Central Portal]
+* https://vanniktech.github.io/gradle-maven-publish-plugin/[Vanniktech Maven Publish Plugin]
+* https://github.com/touchlab/Kermit[Kermit Logging Library]
