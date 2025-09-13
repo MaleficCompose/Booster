@@ -18,7 +18,9 @@ plugins {
     alias(libs.plugins.androidLibrary)
     alias(libs.plugins.vanniktech.mavenPublish)
     alias(libs.plugins.dokka)
+    alias(libs.plugins.compose)
     alias(libs.plugins.kotlinter)
+    kotlin("plugin.compose") version libs.versions.kotlin
 }
 
 group = g
@@ -68,11 +70,21 @@ kotlin {
         val commonMain by getting {
             dependencies {
                 implementation(libs.kermit)
+                implementation(compose.ui)
+                implementation(compose.runtime)
+                implementation(compose.foundation)
+                implementation(compose.material3)
+                implementation(compose.animation)
             }
         }
         val commonTest by getting {
             dependencies {
-                implementation(libs.kotlin.test)
+                kotlin("test")
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation(compose.desktop.common)
             }
         }
     }
@@ -92,7 +104,6 @@ android {
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
     }
 }
 
