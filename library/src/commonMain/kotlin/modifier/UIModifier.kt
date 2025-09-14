@@ -97,4 +97,14 @@ data class UIModifier(
     fun hidden() = copy(visible = false)
 
     fun disabled() = copy(enabled = false)
+
+    fun weight(weight: Float) = this // This would need to be handled in layout containers
+
+    fun alpha(alpha: Float) = copy(opacity = alpha)
+
+    fun fillMaxWidth() = copy(width = Int.MAX_VALUE)
+
+    fun fillMaxHeight() = copy(height = Int.MAX_VALUE)
+
+    fun fillMaxSize() = copy(width = Int.MAX_VALUE, height = Int.MAX_VALUE)
 }

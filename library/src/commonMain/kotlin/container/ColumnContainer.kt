@@ -1,5 +1,7 @@
 package xyz.malefic.compose.booster.container
 
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.*
 import xyz.malefic.compose.booster.node.UINode
 
@@ -11,9 +13,23 @@ class ColumnContainer : UINode() {
         return node
     }
 
+    fun build(block: ColumnContainerBuilder.() -> Unit) {
+        val builder = ColumnContainerBuilder(this)
+        builder.block()
+    }
+
     override fun render(): @Composable () -> Unit =
         {
-            // TODO: Compose column layout
-            children.forEach { it.render()() }
+            Column(
+                modifier =
+                    androidx.compose.ui.Modifier
+                        .fillMaxWidth(),
+            ) {
+                children.forEach { child ->
+                    if (child.modifier.visible) {
+                        child.render()()
+                    }
+                }
+            }
         }
 }

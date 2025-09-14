@@ -92,8 +92,12 @@ class GridContainerBuilder(
         return progressNode
     }
 
-    fun spacer(at: GridPosition): SpacerNode {
-        val spacer = SpacerNode()
+    fun spacer(
+        at: GridPosition,
+        width: Int = 0,
+        height: Int = 0,
+    ): SpacerNode {
+        val spacer = SpacerNode(width, height)
         container.addChild(spacer, at)
         return spacer
     }
@@ -105,5 +109,29 @@ class GridContainerBuilder(
         cellHeight: Int = 100,
     ) {
         container.gridConfig = GridConfig(rows, columns, cellWidth, cellHeight)
+    }
+
+    fun divider(
+        at: GridPosition,
+        orientation: DividerNode.Orientation = DividerNode.Orientation.Horizontal,
+        thickness: Int = 1,
+        modifier: UIModifier.() -> UIModifier = { this },
+    ): DividerNode {
+        val dividerNode = DividerNode(orientation, thickness)
+        dividerNode.modifier = UIModifier().modifier()
+        container.addChild(dividerNode, at)
+        return dividerNode
+    }
+
+    fun card(
+        at: GridPosition,
+        elevation: Int = 4,
+        modifier: UIModifier.() -> UIModifier = { this },
+        content: @androidx.compose.runtime.Composable () -> Unit = {},
+    ): CardNode {
+        val cardNode = CardNode(content, elevation)
+        cardNode.modifier = UIModifier().modifier()
+        container.addChild(cardNode, at)
+        return cardNode
     }
 }
